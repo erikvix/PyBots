@@ -3,6 +3,8 @@ import keyboard
 from time import sleep
 import win32api
 import win32con
+import win32ui
+import win32gui
 import schedule
 
 
@@ -11,6 +13,31 @@ def click(x, y):
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
     sleep(0.02)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
+
+
+def upgradeCapture():
+    w = 1600
+    h = 900
+
+    hwnd = None
+    wDC = win32gui.GetWindowDC(hwnd)
+    dcObj = win32ui.CreateDCFromHandle(wDC)
+    cDC = dcObj.CreateCompatibleDC()
+    dataBitMap = win32ui.CreateBitmap()
+    dataBitMap.CreateCompatibleBitmap(dcObj, w, h)
+    cDC.SelectObject(dataBitMap)
+    cDC.BitBlt((0, 0), (w, h), dcObj, (0, 0), win32con.SRCCOPY)
+
+    signedIntsArray = dataBitMap.GetBitmapBits(True)
+    img = np.fromstring(signedIntsArray, dtype='uint8')
+    img.shape = (h, w, 4)
+
+    dcObj.DeleteDC()
+    cDC.DeleteDC()
+    win32gui.ReleaseDC(hwnd, wDC)
+    win32gui.DeleteObject(dataBitMap.GetHandle())
+
+    return img
 
 
 def ClickerUpgrade():
@@ -35,24 +62,25 @@ def goldencookie():
 
 def buyupgrade():
     if bot.locateOnScreen('xd2.png', grayscale=False, confidence=0.8):
-        click(1251, 191)
         for a in range(3):
-            for x in range(7):
-                click(1322, 300+x*65)
+            for x in range(8):
+                click(1322, 300+x*50)
                 sleep(0.5)
         bot.moveTo(277, 423)
 
 
 schedule.every(1.5).minutes.do(ClickerUpgrade)
+schedule.every(2).seconds.do(buyupgrade)
+
 bot.hotkey('alt', 'tab')
 while keyboard.is_pressed('q') == False:
     schedule.run_pending()
-    clickCookie(20)
+    clickCookie(50)
 
     if bot.locateOnScreen('xd2.png', grayscale=False, confidence=0.7):
-        click(1251, 191)
+        bot.doubleClick(1252, 419)
         for a in range(3):
-            for x in range(3):
+            for x in range(8):
                 click(1322, 300+x*65)
         click(1322, 715)
 
