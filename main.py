@@ -66,12 +66,12 @@ def GoldenCookie():
     cv2.resizeWindow('Golden_Cookie_Match', 960, 540)
     cv2.imshow('Golden_Cookie_Match', img2)
     GCx, GCy = max_loc
-    mouse.position = (GCx + 50, GCy + 50)
-    mouse.click(Button.left, 1)
+    # mouse.position = (GCx + 50, GCy + 50)
+    # mouse.click(Button.left, 1)
 
 
 schedule.every(1.5).minutes.do(ClickerUpgrade)
-schedule.every(1.5).seconds.do(GoldenCookie)
+schedule.every(3).seconds.do(GoldenCookie)
 
 
 def clicker():
@@ -79,9 +79,9 @@ def clicker():
     loop_time = time()
     while True:
         schedule.run_pending()
-        if clicking:  # 289 440
-            mouse.position = (289, 440)
-            mouse.click(Button.left, 1)
+        # if clicking:  # 289 440
+        #     mouse.position = (289, 440)
+        #     mouse.click(Button.left, 1)
 
         upgradeDisplay = upgradeCapture()
 
@@ -109,9 +109,9 @@ def clicker():
                     centerX = (cx)
                     centerY = (cy)
                     center = (cx, cy)
-                    mouse.position = (centerX, centerY)
-                    mouse.click(Button.left, 1)
-                    print(center)
+                    # mouse.position = (centerX, centerY)
+                    # mouse.click(Button.left, 1)
+                    # print(center)
 
         cv2.namedWindow('Upgrade_Image', cv2.WINDOW_NORMAL)
         cv2.resizeWindow('Upgrade_Image', 960, 540)
