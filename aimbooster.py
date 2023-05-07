@@ -69,20 +69,19 @@ def buyupgrade():
         bot.moveTo(277, 423)
 
 
-schedule.every(1.5).minutes.do(ClickerUpgrade)
-schedule.every(2).seconds.do(buyupgrade)
+# schedule.every(1.5).minutes.do(ClickerUpgrade)
+# schedule.every(2).seconds.do(buyupgrade)
 
 bot.hotkey('alt', 'tab')
 while keyboard.is_pressed('q') == False:
-    schedule.run_pending()
+    # schedule.run_pending()
     clickCookie(50)
 
     if bot.locateOnScreen('xd2.png', grayscale=False, confidence=0.7):
-        bot.doubleClick(1252, 419)
         for a in range(3):
-            for x in range(8):
+            click(1252, 187)
+            for x in range(10):
                 click(1322, 300+x*65)
-        click(1322, 715)
 
     # position = bot.locateOnScreen(
     #     'gc2.png', grayscale=True, confidence=0.8)
