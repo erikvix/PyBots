@@ -6,6 +6,8 @@ import win32con
 import win32ui
 import win32gui
 import schedule
+import numpy as np
+import cv2
 
 
 def click(x, y):
@@ -53,11 +55,26 @@ def clickCookie(c):
 
 
 def goldencookie():
-    position = bot.locateOnScreen(
-        'gc2.png', grayscale=True, confidence=0.8)
-    if position:
-        bot.moveTo(position[0] + 30, position[1] + 30)
-        bot.doubleClick()
+    upgradeDisplayGC = upgradeCapture()
+    img = upgradeDisplayGC, 0
+    template = cv2.imread('goldencookietransp.png', 0)
+    gh, gw = template.shape
+    # methods = [cv2.TM_CCOEFF, cv2.TM_CCOEFF_NORMED, cv2.TM_CCORR, cv2.TM_CCOEFF_NORMED, cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]
+    img2 = cv2.cvtColor(upgradeDisplayGC, cv2.COLOR_BGR2GRAY)
+
+    result = cv2.matchTemplate(img2, template, cv2.TM_CCOEFF_NORMED)
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+
+    location = max_loc
+
+    bottom_right = (location[0] + gw, location[1] + gh)
+    cv2.rectangle(img2, location, bottom_right, 255, 5)
+    cv2.namedWindow('Golden_Cookie_Match', cv2.WINDOW_NORMAL)
+    cv2.resizeWindow('Golden_Cookie_Match', 960, 540)
+    cv2.imshow('Golden_Cookie_Match', img2)
+    GCx, GCy = max_loc
+    # mouse.position = (GCx + 50, GCy + 50)
+    # mouse.click(Button.left, 1)
 
 
 def buyupgrade():
